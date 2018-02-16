@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
-@Qualifier("${mailgun.email.type}")
+@Qualifier("${mailgun.service.type}")
 public class MailgunEmailService implements EmailService {
     final static Logger logger = Logger.getLogger(MailgunEmailService.class);
 

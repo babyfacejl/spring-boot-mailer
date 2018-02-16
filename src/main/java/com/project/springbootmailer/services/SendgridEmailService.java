@@ -14,7 +14,7 @@ import java.io.IOException;
 
 
 @Service
-@Qualifier("${sendgrid.email.type}")
+@Qualifier("${sendgrid.service.type}")
 public class SendgridEmailService implements EmailService {
     final static Logger logger = Logger.getLogger(SendgridEmailService.class);
 

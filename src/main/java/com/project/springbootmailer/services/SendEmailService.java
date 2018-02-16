@@ -11,22 +11,22 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SendEmailService {
-    private EmailService primaryEmailService;
-    private EmailService backupEmailService;
+    private EmailService mailgunEmailService;
+    private EmailService sendgridEmailService;
 
     @Autowired
-    public SendEmailService(@Qualifier("${mailgun.email.type}") EmailService primaryEmailService, @Qualifier("${sendgrid.email.type}") EmailService backupEmailService) {
-        this.primaryEmailService = primaryEmailService;
-        this.backupEmailService = backupEmailService;
+    public SendEmailService(@Qualifier("${mailgun.service.type}") EmailService mailgunEmailService, @Qualifier("${sendgrid.service.type}") EmailService sendgridEmailService) {
+        this.mailgunEmailService = mailgunEmailService;
+        this.sendgridEmailService = sendgridEmailService;
     }
 
     @HystrixCommand(fallbackMethod = "sendWithBackup", commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "5000")})
     public SendResponse send(MyEmail email) throws Exception {
-        return primaryEmailService.sendEmail(email);
+        return mailgunEmailService.sendEmail(email);
     }
 
     private SendResponse sendWithBackup(MyEmail email) throws Exception {
-        return backupEmailService.sendEmail(email);
+        return sendgridEmailService.sendEmail(email);
     }
 }
