@@ -4,7 +4,6 @@ import com.project.springbootmailer.utils.SendStatus;
 import java.util.Date;
 
 public class MyEmail {
-    private String id;
     private String subject;
     private Date created = new Date();
     private Date sent;
@@ -17,22 +16,13 @@ public class MyEmail {
     public MyEmail() {
     }
 
-    public MyEmail(String id, String from, String to, String cc, String bcc, String text, String subject) {
-        this.id = id;
+    public MyEmail(String from, String to, String cc, String bcc, String text, String subject) {
         this.from = from;
         this.to = to;
         this.cc = cc;
         this.bcc = bcc;
         this.text = text;
         this.subject = subject;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public Date getCreated() {
-        return created;
     }
 
     public void setCreated(Date created) {
@@ -79,11 +69,6 @@ public class MyEmail {
         this.sent = sent;
     }
 
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getSubject() {
         return subject;
     }
@@ -103,8 +88,7 @@ public class MyEmail {
     @Override
     public String toString() {
         return "MyEmail{" +
-                "id='" + id + '\'' +
-                ", subject='" + subject + '\'' +
+                "subject='" + subject + '\'' +
                 ", created=" + created +
                 ", sent=" + sent +
                 ", to='" + to + '\'' +

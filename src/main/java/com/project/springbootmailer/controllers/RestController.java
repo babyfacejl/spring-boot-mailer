@@ -21,8 +21,9 @@ public class RestController {
 
     @RequestMapping(value = "/send", method = RequestMethod.POST)
     public String send(@RequestBody MyEmail email) throws Exception {
-       SendResponse response = sendEmailService.send(email);
-       return objectMapper.writeValueAsString(response);
+        logger.debug(email.toString());
+        SendResponse response = sendEmailService.send(email);
+        return objectMapper.writeValueAsString(response);
     }
 
 
