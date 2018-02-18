@@ -23,12 +23,9 @@ import java.io.IOException;
 public class SendgridEmailService implements EmailService {
     final static Logger logger = Logger.getLogger(SendgridEmailService.class);
 
-    @Autowired
-    private MultipleEmailsConverter converter;
-
     @Override
     public SendResponse sendEmail(MyEmail email) throws Exception {
-        final Mail mail = converter.convertToSendgridMail(email);
+        final Mail mail = MultipleEmailsConverter.convertToSendgridMail(email);
 
         final HttpRequestWithBody body = Unirest.post("https://api.sendgrid.com/v3/mail/send")
                 .header("Authorization", "Bearer " +System.getenv("SENDGRID_API_KEY"))
