@@ -6,16 +6,13 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.request.HttpRequestWithBody;
 import com.project.springbootmailer.models.MyEmail;
 import com.project.springbootmailer.models.SendResponse;
-import com.project.springbootmailer.utils.MultipleEmailsConverter;
+import com.project.springbootmailer.utils.MultipleEmailsHelper;
 import com.project.springbootmailer.utils.SendStatus;
 import com.sendgrid.*;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
 
 
 @Service
@@ -25,7 +22,7 @@ public class SendgridEmailService implements EmailService {
 
     @Override
     public SendResponse sendEmail(MyEmail email) throws Exception {
-        final Mail mail = MultipleEmailsConverter.convertToSendgridMail(email);
+        final Mail mail = MultipleEmailsHelper.convertToSendgridMail(email);
 
         final HttpRequestWithBody body = Unirest.post("https://api.sendgrid.com/v3/mail/send")
                 .header("Authorization", "Bearer " +System.getenv("SENDGRID_API_KEY"))

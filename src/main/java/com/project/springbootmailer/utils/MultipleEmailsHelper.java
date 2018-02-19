@@ -6,34 +6,48 @@ import com.sendgrid.Email;
 import com.sendgrid.Mail;
 import com.sendgrid.Personalization;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
-public final class MultipleEmailsConverter {
+public final class MultipleEmailsHelper {
+    private static final String regex = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
     public static List<Email> convertEmails(String emails) {
-        List<Email> result =  Arrays.asList(StringUtils.split(emails, ","))
+        final List<Email> result =  Arrays.asList(StringUtils.split(emails, ","))
                 .stream()
                 .filter(s -> StringUtils.isNotBlank(s))
-                .map(m -> new Email(m))
+                .map(m -> new Email(m.trim()))
                 .collect(Collectors.toList());
         return result;
+    }
+
+    public static boolean validateEmails(String emails) {
+        Pattern pattern = Pattern.compile(regex);
+        final List<Email> results = convertEmails(emails);
+        for (final Email email: results) {
+            if (!pattern.matcher(email.getEmail()).matches()) {
+                System.out.println("email = " + email.getEmail());
+                return false;
+            }
+        }
+        return true;
     }
 
     public static Mail convertToSendgridMail(MyEmail email) {
 
         Personalization personalization = new Personalization();
-        MultipleEmailsConverter.convertEmails(email.getTo()).stream().forEach(to -> personalization.addTo(to));
+        MultipleEmailsHelper.convertEmails(email.getTo()).stream().forEach(to -> personalization.addTo(to));
         if (isNotBlank(email.getBcc())) {
-            MultipleEmailsConverter.convertEmails(email.getBcc()).stream().forEach(bcc -> personalization.addBcc(bcc));
+            MultipleEmailsHelper.convertEmails(email.getBcc()).stream().forEach(bcc -> personalization.addBcc(bcc));
         }
         if (isNotBlank(email.getCc())) {
-            MultipleEmailsConverter.convertEmails(email.getCc()).stream().forEach(cc -> personalization.addCc(cc));
+            MultipleEmailsHelper.convertEmails(email.getCc()).stream().forEach(cc -> personalization.addCc(cc));
         }
 
         Mail mail = new Mail();

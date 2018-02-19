@@ -8,12 +8,12 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static com.project.springbootmailer.utils.MultipleEmailsConverter.convertEmails;
-import static com.project.springbootmailer.utils.MultipleEmailsConverter.convertToSendgridMail;
+import static com.project.springbootmailer.utils.MultipleEmailsHelper.convertEmails;
+import static com.project.springbootmailer.utils.MultipleEmailsHelper.convertToSendgridMail;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class MultipleEmailsConverterTest {
+public class MultipleEmailsHelperTest {
 
     @Test
     public void shouldConvertStringToEmail() {
@@ -51,5 +51,15 @@ public class MultipleEmailsConverterTest {
         assertThat(personalization.getBccs().size(), is(2));
         assertThat(personalization.getBccs().get(0).getEmail(), is("bcc1@world.com"));
         assertThat(personalization.getBccs().get(1).getEmail(), is("bcc2@world.com"));
+    }
+
+    @Test
+    public void validateEmails() {
+        String emails = "hello@world, hello@.cc";
+        assertThat(MultipleEmailsHelper.validateEmails(emails), is(false));
+        emails = "hello@yahoo, hello@.yahoo.com";
+        assertThat(MultipleEmailsHelper.validateEmails(emails), is(false));
+        emails = "hello@gmail.com";
+        assertThat(MultipleEmailsHelper.validateEmails(emails), is(true));
     }
 }

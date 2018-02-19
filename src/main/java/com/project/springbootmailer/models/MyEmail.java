@@ -1,7 +1,16 @@
 package com.project.springbootmailer.models;
 
+import com.project.springbootmailer.utils.MultipleEmailsHelper;
 import com.project.springbootmailer.utils.SendStatus;
+import org.apache.commons.lang.StringUtils;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import static com.project.springbootmailer.utils.MultipleEmailsHelper.validateEmails;
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
 
 public class MyEmail {
     private String subject;
@@ -12,6 +21,7 @@ public class MyEmail {
     private String bcc;
     private String text;
     private String from;
+    private List<String> errorMsgs = new ArrayList<>();
 
     public MyEmail() {
     }
@@ -97,5 +107,34 @@ public class MyEmail {
                 ", text='" + text + '\'' +
                 ", from='" + from + '\'' +
                 '}';
+    }
+
+    public List<String> validate() {
+        errorMsgs.clear();
+
+        if (isBlank(this.from)) {
+            errorMsgs.add("From is required.");
+        } else if (!validateEmails(this.from)){
+            errorMsgs.add("From contains invalid email address.");
+        }
+        if (isBlank(this.to)) {
+            errorMsgs.add("To is required.");
+        } else if (!validateEmails(this.to)){
+            errorMsgs.add("To contains invalid email address.");
+        }
+        if (isNotBlank(this.cc) && !validateEmails(this.cc)) {
+            errorMsgs.add("Cc contains invalid email address.");
+        }
+        if (isNotBlank(this.bcc) && !validateEmails(this.bcc)) {
+            errorMsgs.add("Bcc contains invalid email address.");
+        }
+        if (isBlank(this.subject)) {
+            errorMsgs.add("Subject is required.");
+        }
+        if (isBlank(this.text)) {
+            errorMsgs.add("Body is required.");
+        }
+
+        return errorMsgs;
     }
 }
