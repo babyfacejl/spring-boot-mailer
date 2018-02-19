@@ -14,10 +14,10 @@ public class MyEmailTest {
     public void shouldCheckRequiredFields() {
         final MyEmail email = new MyEmail();
         final List<String> errorMsgs = email.validate();
-        assertThat(errorMsgs, hasItem("From is required"));
-        assertThat(errorMsgs, hasItem("To is required"));
-        assertThat(errorMsgs, hasItem("Subject is required"));
-        assertThat(errorMsgs, hasItem("Body is required"));
+        assertThat(errorMsgs, hasItem("From is required."));
+        assertThat(errorMsgs, hasItem("To is required."));
+        assertThat(errorMsgs, hasItem("Subject is required."));
+        assertThat(errorMsgs, hasItem("Body is required."));
     }
 
     @Test
@@ -25,10 +25,10 @@ public class MyEmailTest {
         final MyEmail email = new MyEmail("hell@.com", "to@.com", "cc1@world.com,cc2@.com",
                 "bcc1@world.com,bcc2@.com","text", "subject");
         final List<String> errorMsgs = email.validate();
-        assertThat(errorMsgs, hasItem("From contains invalid email address"));
-        assertThat(errorMsgs, hasItem("To contains invalid email address"));
-        assertThat(errorMsgs, hasItem("Cc contains invalid email address"));
-        assertThat(errorMsgs, hasItem("Bcc contains invalid email address"));
+        assertThat(errorMsgs, hasItem("From contains invalid email address."));
+        assertThat(errorMsgs, hasItem("To contains invalid email address."));
+        assertThat(errorMsgs, hasItem("Cc contains invalid email address."));
+        assertThat(errorMsgs, hasItem("Bcc contains invalid email address."));
     }
 
     @Test
