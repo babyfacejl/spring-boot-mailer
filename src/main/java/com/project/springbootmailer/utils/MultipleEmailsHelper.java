@@ -32,7 +32,6 @@ public final class MultipleEmailsHelper {
         final List<Email> results = convertEmails(emails);
         for (final Email email: results) {
             if (!pattern.matcher(email.getEmail()).matches()) {
-                System.out.println("email = " + email.getEmail());
                 return false;
             }
         }
