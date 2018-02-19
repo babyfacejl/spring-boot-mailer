@@ -2,6 +2,7 @@ package com.project.springbootmailer.controllers;
 
 import com.project.springbootmailer.models.MyEmail;
 import com.project.springbootmailer.services.SendEmailService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -14,8 +15,12 @@ public class RestControllerTest {
     @Mock
     private SendEmailService emailService;
 
-    @InjectMocks
-    private final RestController controller = new RestController();
+    private RestController controller;
+
+    @Before
+    public void setUp() throws Exception {
+        controller = new RestController(emailService);
+    }
 
     @Test
     public void shouldInvokeSend() throws Exception {

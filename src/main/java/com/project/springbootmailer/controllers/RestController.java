@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class RestController {
     private static final Logger logger = Logger.getLogger(RestController.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
+    private final SendEmailService sendEmailService;
 
     @Autowired
-    public SendEmailService sendEmailService;
+    public RestController(SendEmailService sendEmailService) {
+        this.sendEmailService = sendEmailService;
+    }
 
     @RequestMapping(value = "/send", method = RequestMethod.POST)
     public String send(@RequestBody MyEmail email) throws Exception {
